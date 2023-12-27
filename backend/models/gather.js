@@ -23,7 +23,19 @@ const gatherSchema = new mongoose.Schema({
         type: Array,
         default: [],
     },
-    orders: {
+    ordersSend: {
+        type: Array,
+        defult: [],
+    },
+    ordersRecive: {
+        type: Array,
+        defult: [],
+    },
+    productsSend: {
+        type: Array,
+        defult: [],
+    },
+    productsRecive: {
         type: Array,
         defult: [],
     },
@@ -36,11 +48,14 @@ const validate = (gather) => {
 		admin: Joi.string().required(),
         staff: Joi.array(),
         transactionId: Joi.array(),
-        orders: Joi.array(),
+        ordersSend: Joi.array(),
+        ordersRecive: Joi.array(),
+        productsSend: Joi.array(),
+        productsRecive: Joi.array(),
 	});
 	return schema.validate(gather);
 };
 
-const Gather = mongoose.model('gather', gatherSchema);
+const Gather = mongoose.model("gather", gatherSchema);
 
 module.exports = { Gather, validate };

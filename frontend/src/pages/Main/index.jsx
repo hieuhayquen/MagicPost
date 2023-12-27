@@ -14,25 +14,23 @@ const navLinks = [
 	{ name: "Đăng nhập", link: "/login" },
 ];
 
-const companyLInks = ["About", "Jobs", "For the record"];
+const companyLInks = ["Về chúng tôi", "Việc làm", "Lịch sử công ty"];
 
 const communitiesLinks = [
-	"For Artists",
-	"Developers",
-	"Advertising",
-	"Investors",
-	"Vendors",
+	"Cơ hội việc làm",
+	"Quảng cáo",
+	"Nhà đầu tư",
+	"Đối tác",
 ];
 
-const usefulLInks = ["Support", "Web Player", "Free Mobile App"];
+const usefulLInks = ["Hỗ trợ", "Trình duyệt web", "Ứng dụng điện thoại"];
 
 const footerLinks = [
-	"legal",
-	"privacy center",
-	"privacy policy",
+	"Pháp lý",
+	"Trung tâm bảo mật",
+	"Chính sách bảo mật",
 	"Cookies",
-	"About ads",
-	"Additional CA Privacy Disclosures",
+	"Quảng cáo",
 ];
 
 const footerIcons = [<InstagramIcon />, <TwitterIcon />, <FacebookIcon />];
@@ -41,6 +39,7 @@ const Main = () => {
 	return (
 		<div className={styles.container}>
 			<nav className={styles.navbar_container}>
+				<h1>MagicPost</h1>
 				<div className={styles.nav_links}>
 					{navLinks.map((link, index) => (
 						<Link key={index} to={link.link} className={styles.links}>
@@ -50,19 +49,12 @@ const Main = () => {
 				</div>
 			</nav>
 			<main className={styles.main_container}>
-				<div className={styles.main}>
-					<Link to="/signup">
-						<Button
-							label="Bắt đầu miễn phí"
-							style={{ color: "#2941ab", width: "18rem", fontSize: "1.4rem" }}
-						/>
-					</Link>
-				</div>
+				
 			</main>
 			<footer className={styles.footer_container}>
 				<div className={styles.footer_1}>
 					<div className={styles.footer_1_links}>
-						<div className={styles.footer_heading}>Company</div>
+						<div className={styles.footer_heading}>Công ty</div>
 						{companyLInks.map((link, index) => (
 							<div className={styles.links} key={index}>
 								{link}
@@ -70,7 +62,7 @@ const Main = () => {
 						))}
 					</div>
 					<div className={styles.footer_1_links}>
-						<div className={styles.footer_heading}>Communities</div>
+						<div className={styles.footer_heading}>Cộng đồng</div>
 						{communitiesLinks.map((link, index) => (
 							<div className={styles.links} key={index}>
 								{link}
@@ -78,7 +70,7 @@ const Main = () => {
 						))}
 					</div>
 					<div className={styles.footer_1_links}>
-						<div className={styles.footer_heading}>Useful links</div>
+						<div className={styles.footer_heading}>Tiện ích</div>
 						{usefulLInks.map((link, index) => (
 							<div className={styles.links} key={index}>
 								{link}
@@ -103,7 +95,7 @@ const Main = () => {
 					</div>
 					<div className={styles.copy_right}>
 						<CopyrightIcon />
-						<span>2023 Echo</span>
+						<span>Magic Post</span>
 					</div>
 				</div>
 			</footer>

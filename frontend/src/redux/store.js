@@ -7,12 +7,16 @@ import authReducer from "./authSlice";
 import usersReducer from "./usersSlice";
 import transactionsReducer from "./transactionSlice";
 import gathersReducer from "./gatherSlice";
+import ordersReducer from "./orderSlice";
+import productsReducer from "./productSlice";
 
 const reducers = combineReducers({
 	auth: authReducer,
 	users: usersReducer,
 	transactions: transactionsReducer,
 	gathers: gathersReducer,
+	orders: ordersReducer,
+	products: productsReducer,
 });
 
 const persistConfig = {

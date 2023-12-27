@@ -7,9 +7,15 @@
 		background-color: var(--black);
 		display: flex;
 		align-items: center;
-		justify-content: right;
+		justify-content: space-between;
 		padding: 0 10rem;
 
+		h1{
+			font-weight: 700;
+			font-size: 4rem;
+			display: flex;
+			color: white;
+		}
 
 		.nav_links {
 			display: flex;
@@ -38,39 +44,17 @@
 		align-items: center;
 		justify-content: center;
 		position: relative;
-		//background-image: url(https://www-growth.scdn.co/static/home/bursts.svg);
-		background-size: 175%;
-		background-position: 46% 4%;
+		background-image: url(https://images.pexels.com/photos/2199293/pexels-photo-2199293.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1);
+		background-size: 80%;
+		background-position: 50% 0%;
 		-webkit-box-pack: center;
 
 		.main {
 			display: flex;
-			align-items: center;
+			align-items: left;
 			flex-direction: column;
 			justify-content: center;
 			margin: 15rem 0;
-
-			h1 {
-				text-align: center;
-				font-size: 10rem;
-				color: var(--primary);
-				font-weight: 900;
-				margin: 0;
-				padding-bottom: 2.4rem;
-				@media (min-width: 1200px) {
-					text-indent: -3.3em;
-					font-size: 15rem;
-					width: 80rem;
-					transform: translate(125px, 0px);
-				}
-			}
-
-			p {
-				font-size: 1.8rem;
-				font-weight: 400;
-				color: var(--primary);
-				padding-bottom: 3rem;
-			}
 		}
 	}
 	.footer_container {

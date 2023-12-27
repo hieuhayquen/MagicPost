@@ -13,7 +13,7 @@ const Select = ({ label, options, handleInputState, placeholder, ...rest }) => {
 					{placeholder}
 				</option>
 				{options.map((option, index) => (
-					<option key={index} value={option.value}>
+					<option key={index} value={option._id}>
 						{option.name}
 					</option>
 				))}

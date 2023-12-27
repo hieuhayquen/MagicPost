@@ -1,9 +1,10 @@
 const router = require("express").Router();
 const { User, validate } = require("../models/user");
+const { Product } = require("../models/product")
 const bcrypt = require("bcrypt");
-const admin = require("../middleware/admin");
 const auth = require("../middleware/auth");
 const validateObjectId = require("../middleware/validateObjectId");
+const Joi = require("joi");
 
 // create user
 router.post("/", async (req, res) => {
@@ -26,7 +27,7 @@ router.post("/", async (req, res) => {
 });
 
 // get all users
-router.get("/", admin, async (req, res) => {
+router.get("/", auth, async (req, res) => {
 	const users = await User.find().select("-password -__v");
 	res.status(200).send({ data: users });
 });
@@ -34,7 +35,8 @@ router.get("/", admin, async (req, res) => {
 // get user by id
 router.get("/:id", [validateObjectId, auth], async (req, res) => {
 	const user = await User.findById(req.params.id).select("-password -__v");
-	res.status(200).send({ data: user });
+	const products = await Product.find({ _id: user.products });
+	res.status(200).send({ data: {user, products }});
 });
 
 // update user by id
@@ -48,26 +50,27 @@ router.put("/:id", [validateObjectId, auth], async (req, res) => {
 });
 
 // delete user by id
-router.delete("/:id", [validateObjectId, admin], async (req, res) => {
+router.delete("/:id", [validateObjectId, auth], async (req, res) => {
 	await User.findByIdAndDelete(req.params.id);
 	res.status(200).send({ message: "Successfully deleted user." });
 });
-//add order to user
-router.put("/add-order", auth, async (req, res) => {
+
+//add product to user
+router.put("/add/product", auth, async (req, res) => {
 	const schema = Joi.object({
 		userId: Joi.string().required(),
-		orderId: Joi.string().required(),
+		productId: Joi.string().required(),
 	});
 	const { error } = schema.validate(req.body);
 	if (error) return res.status(400).send({ message: error.details[0].message });
 
 	const user = await User.findById(req.body.userId);
 
-	if (user.orders.indexOf(req.body.orderId) === -1) {
-		user.orders.push(req.body.orderId);
+	if (user.products.indexOf(req.body.productId) === -1) {
+		user.products.push(req.body.productId);
 	}
 	await user.save();
-	res.status(200).send({ data: transaction, message: "Added to user" });
+	res.status(200).send({ data: user, message: "Added product to user" });
 });
 
 

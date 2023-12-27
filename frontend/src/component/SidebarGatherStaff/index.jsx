@@ -3,13 +3,17 @@ import { NavLink } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import { logout } from "../../redux/authSlice";
-import PeopleIcon from "@mui/icons-material/People";
 import ExitToApp from "@mui/icons-material/ExitToApp";
+import InventoryIcon from '@mui/icons-material/Inventory';
+import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 import styles from "./styles.module.scss";
 
 const options = [
-	{ name: "dashboard", path: "/", icon: <DashboardIcon /> },
-	{ name: "users", path: "/", icon: <PeopleIcon /> },
+	{ name: "Thống kê", path: "/", icon: <DashboardIcon /> },
+	{ name: "Kiện hàng", path: "/gather/products", icon: <InventoryIcon /> },
+	{ name: "Kiện hàng gửi đi", path: "/gather/products-send", icon: <InventoryIcon /> },
+	{ name: "Đơn hàng", path: "/gather/orders", icon: <LocalShippingIcon /> },
+	{ name: "Đơn hàng gửi đi", path: "/gather/orders-send", icon: <LocalShippingIcon /> },
 ];
 
 const SidebarGatherStaff = () => {
@@ -17,6 +21,7 @@ const SidebarGatherStaff = () => {
 
 	const logoutHandler = () => {
 		dispatch(logout());
+		window.location = "/login";
 	};
 
 	return (
@@ -30,7 +35,6 @@ const SidebarGatherStaff = () => {
 					>
 						<NavLink
 							className={styles.option}
-							// exact={option.path === "/" ? true : false}
 							exact={option.path}
 							to={option.path}
 							activeclassname={styles.sidebar_active}

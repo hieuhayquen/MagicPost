@@ -4,9 +4,10 @@ export const usersSlice = createSlice({
 	name: "users",
 	initialState: {
 		users: [],
-		currentUser: null,
+		currentUser: null, //nguoi dang dang nhap 
 		getUsersProgress: false,
 		getUserProgress: false,
+		addProgress: false,
 		createUserProgress: false,
 		updateUserProgress: false,
 		deleteUserProgress: false,
@@ -62,6 +63,18 @@ export const usersSlice = createSlice({
 			state.getUserProgress = false;
 			state.error = true;
 		},
+		addStart: (state) => {
+			state.addProgress = true;
+		},
+		addSuccess: (state, action) => {
+			const index = state.transactions.indexOf(action.payload._id);
+			state.transactions[index] = action.payload;
+			state.addProgress = false;
+		},
+		addFailure: (state) => {
+			state.error = true;
+			state.addProgress = false;
+		},
 
 		deleteUserStart: (state) => {
 			state.isFetching = true;
@@ -84,6 +97,9 @@ export const {
 	getUsersStart,
 	getUsersSuccess,
 	getUsersFailure,
+	addStart,
+	addSuccess,
+	addFailure,
 	updateUserStart,
 	updateUserSuccess,
 	updateUserFailure,

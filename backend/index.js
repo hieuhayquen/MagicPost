@@ -8,7 +8,7 @@ const authRoutes = require("./routes/authRoutes");
 const gatherRoutes = require("./routes/gatherRoutes");
 const orderRoutes = require("./routes/orderRoutes");
 const transactionRoutes = require("./routes/transactionRoutes");
-const searchRoutes = require("./routes/searchRoutes");
+const productRoutes = require("./routes/productRoutes");
 const app = express();
 
 connectDB();
@@ -20,7 +20,7 @@ app.use("/api/login/", authRoutes);
 app.use("/api/orders/", orderRoutes);
 app.use("/api/gathers/", gatherRoutes);
 app.use("/api/transactions/", transactionRoutes);
-app.use("/api/", searchRoutes);
+app.use("/api/products/",productRoutes);
 
 
 const port = 8080;

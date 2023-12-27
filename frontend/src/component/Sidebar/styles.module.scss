@@ -5,7 +5,6 @@
 	width: 25rem;
 	height: 100vh;
 	background: var(--blue-black);
-	background-color: rgb(59, 59, 59);
 	color: white;
 	z-index: 100;
 
@@ -45,22 +44,17 @@
 					text-transform: capitalize;
 					margin-left: 1.5rem;
 				}
-
-				svg {
-					width: 2.5rem;
-					height: 2.5rem;
-				}
 			}
 
 			&:hover {
-				background: rgb(138, 137, 137);
+				background: var(--light-blue-black);
 			}
 
 			.sidebar_active {
 				color: var(--primary);
 				width: calc(100% - 2.4rem);
 				border-left: 0.4rem solid var(--primary);
-				background-color: lightblue;
+				background-color: var(--light-blue-black);
 				padding-left: 1.6rem;
 			}
 		}

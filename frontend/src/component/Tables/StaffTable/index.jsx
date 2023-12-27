@@ -1,7 +1,5 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { deleteUser } from "../../../redux/usersSlice/apiCalls";
 import {
 	TableContainer,
 	Table,
@@ -14,18 +12,11 @@ import {
 	CircularProgress,
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
 import styles from "./styles.module.scss";
 
 const StaffTable = ({ staffs }) => {
 	const [loading, setLoading] = useState(true);
-	const dispatch = useDispatch();
-
 	setTimeout(() => setLoading(false), 1000);
-
-	const handleUserDelete = (id) => {
-		deleteUser(id, dispatch);
-	};
 
 	return (
 		<TableContainer component={Paper} className={styles.table_container}>
@@ -36,7 +27,7 @@ const StaffTable = ({ staffs }) => {
 						<TableCell align="center">Email</TableCell>
 						<TableCell align="center">Địa chỉ</TableCell>
 						<TableCell align="center">Số điện thoại</TableCell>
-						<TableCell align="center">Actions</TableCell>
+						<TableCell align="center">Chi tiết</TableCell>
 					</TableRow>
 				</TableHead>
 				{loading && (
@@ -70,12 +61,6 @@ const StaffTable = ({ staffs }) => {
 												<EditIcon />
 											</IconButton>
 										</Link>
-										<IconButton
-											className={styles.delete_btn}
-											onClick={() => handleUserDelete(user._id)}
-										>
-											<DeleteIcon />
-										</IconButton>
 									</TableCell>
 								</TableRow>
 							))}

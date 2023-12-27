@@ -11,7 +11,7 @@ module.exports = (req, res, next) => {
 		if (err) {
 			return res.status(400).send({ message: "invalid token" });
 		} else {
-			if (!validToken.role == 'transactionStaff')
+			if (!validToken.role == 'transactionAdmin' || !validToken.role == 'gatherAdmin')
 				return res
 					.status(403)
 					.send({ message: "You don't have access to this content!" });

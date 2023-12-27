@@ -31,7 +31,6 @@ const SidebarTransactionAdmin = () => {
 					>
 						<NavLink
 							className={styles.option}
-							// exact={option.path === "/" ? true : false}
 							exact={option.path}
 							to={option.path}
 							activeclassname={styles.sidebar_active}

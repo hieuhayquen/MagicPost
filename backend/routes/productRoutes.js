@@ -1,12 +1,12 @@
 const router = require("express").Router();
-const { User } = require("../models/user");
+//const { User } = require("../models/user");
 const { Product, validate } = require("../models/product");
 const auth = require("../middleware/auth");
 const admin = require("../middleware/admin");
 const validateObjectId = require("../middleware/validateObjectId");
 
 // Create product
-router.post("/", async (req, res) => {
+router.post("/", [auth], async (req, res) => {
 	const { error } = validate(req.body);
 	if (error) res.status(400).send({ message: error.details[0].message });
 
@@ -20,11 +20,19 @@ router.get("/", async (req, res) => {
 	res.status(200).send({ data: products });
 });
 
-// Update product
+// get product by id
+router.get("/:id", [validateObjectId, auth], async (req, res) => {
+	const product = await Product.findById(req.params.id);
+	res.status(200).send({ data: product });
+});
+
+// Update product by id
 router.put("/:id", [validateObjectId], async (req, res) => {
-	const product = await Product.findByIdAndUpdate(req.params.id, req.body, {
-		new: true,
-	});
+	const product = await Product.findByIdAndUpdate(
+		req.params.id, 
+		req.body, 
+		{ new: true }
+	);
 	res.send({ data: product, message: "Updated product successfully" });
 });
 

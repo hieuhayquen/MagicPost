@@ -8,7 +8,7 @@ export const createOrder = async (order, dispatch) => {
 		const { data } = await axiosInstance.post("/orders", order);
 		dispatch(actions.createOrderSuccess(data.data));
 		toast.success(data.message);
-		return true;
+		return data.data;
 	} catch (error) {
 		dispatch(actions.createOrderFailure());
 		return false;

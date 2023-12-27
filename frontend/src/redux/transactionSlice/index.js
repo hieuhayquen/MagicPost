@@ -1,17 +1,14 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-export const TransactionSlice = createSlice({
+export const transactionsSlice = createSlice({
 	name: "transactions",
 	initialState: {
 		transactions: [],
-		currentTransaction: null,
 		createTransactionProgress: false,
+		updateTransactionProgress: false,
 		getAllTransactionsProgress: false,
-		getTransactionProgress: false,
-		addOrderProgress: false,
-		addStaffProgress: false,
-		removeOrderProgress: false,
-		removeStaffProgress: false,
+		addProgress: false,
+		removeProgress: false,
 		deleteTransactionProgress: false,
 		error: false,
 	},
@@ -39,57 +36,45 @@ export const TransactionSlice = createSlice({
 			state.error = true;
 			state.getAllTransactionsProgress = false;
 		},
-		
-		addOrderStart: (state) => {
-			state.addOrderProgress = true;
+
+		addStart: (state) => {
+			state.addProgress = true;
 		},
-		addOrderSuccess: (state, action) => {
+		addSuccess: (state, action) => {
 			const index = state.transactions.indexOf(action.payload._id);
 			state.transactions[index] = action.payload;
-			state.addOrderProgress = false;
+			state.addProgress = false;
 		},
-		addOrderFailure: (state) => {
+		addFailure: (state) => {
 			state.error = true;
-			state.addOrderProgress = false;
+			state.addProgress = false;
+		},
+		removeStart: (state) => {
+			state.removeProgress = true;
+		},
+		removeSuccess: (state, action) => {
+			const index = state.transactions.indexOf(action.payload._id);
+			state.transactions[index] = action.payload;
+			state.removeProgress = false;
+		},
+		removeFailure: (state) => {
+			state.error = true;
+			state.removeProgress = false;
 		},
 
-		addStaffStart: (state) => {
-			state.addStaffProgress = true;
+		updateTransactionStart: (state) => {
+			state.updateTransactionProgress = true;
 		},
-		addStaffSuccess: (state, action) => {
-			const index = state.transactions.indexOf(action.payload._id);
+		updateTransactionSuccess: (state, action) => {
+			const index = state.transactions.findIndex(
+				(transaction) => transaction._id === action.payload._id
+			);
 			state.transactions[index] = action.payload;
-			state.addStaffProgress = false;
+			state.updateTransactionProgress = false;
 		},
-		addStaffFailure: (state) => {
+		updateTransactionFailure: (state) => {
 			state.error = true;
-			state.addStaffProgress = false;
-		},
-
-		removeOrderStart: (state) => {
-			state.removeOrderProgress = true;
-		},
-		removeOrderSuccess: (state, action) => {
-			const index = state.transactions.indexOf(action.payload._id);
-			state.transactions[index] = action.payload;
-			state.removeOrderProgress = false;
-		},
-		removeOrderFailure: (state) => {
-			state.error = true;
-			state.removeOrderProgress = false;
-		},
-
-		removeStaffStart: (state) => {
-			state.removeStaffProgress = true;
-		},
-		removeStaffSuccess: (state, action) => {
-			const index = state.transactions.indexOf(action.payload._id);
-			state.transactions[index] = action.payload;
-			state.removeStaffProgress = false;
-		},
-		removeStaffFailure: (state) => {
-			state.error = true;
-			state.removeStaffProgress = false;
+			state.updateTransactionProgress = false;
 		},
 
 		deleteTransactionStart: (state) => {
@@ -105,18 +90,6 @@ export const TransactionSlice = createSlice({
 			state.error = true;
 			state.deleteTransactionProgress = false;
 		},
-
-		getTransactionStart: (state) => {
-			state.getTransactionProgress = true;
-		},
-		getTransactionSuccess: (state, action) => {
-			state.currentTransaction = action.payload;
-			state.getTransactionProgress = false;
-		},
-		getTransactionFailure: (state) => {
-			state.getTransactionProgress = false;
-			state.error = true;
-		},
 	},
 });
 
@@ -127,24 +100,18 @@ export const {
 	getAllTransactionsStart,
 	getAllTransactionsSuccess,
 	getAllTransactionsFailure,
-	getTransactionStart,
-	getTransactionSuccess,
-	getTransactionFailure,
-	addOrderStart,
-	addOrderSuccess,
-	addOrderFailure,
-	addStaffStart,
-	addStaffSuccess,
-	addStaffFailure,
-	removeOrderStart,
-	removeOrderSuccess,
-	removeOrderFailure,
-	removeStaffFailure,
-	removeStaffStart,
-	removeStaffSuccess,
+	addStart,
+	addSuccess,
+	addFailure,
+	removeStart,
+	removeSuccess,
+	removeFailure,
 	deleteTransactionStart,
 	deleteTransactionSuccess,
 	deleteTransactionFailure,
-} = TransactionSlice.actions;
+	updateTransactionStart,
+	updateTransactionSuccess,
+	updateTransactionFailure,
+} = transactionsSlice.actions;
 
-export default TransactionSlice.reducer;
+export default transactionsSlice.reducer;

@@ -1,15 +1,13 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import DashboardIcon from "@mui/icons-material/Dashboard";
 import { logout } from "../../redux/authSlice";
-import PeopleIcon from "@mui/icons-material/People";
+import InventoryIcon from '@mui/icons-material/Inventory';
 import ExitToApp from "@mui/icons-material/ExitToApp";
 import styles from "./styles.module.scss";
 
 const options = [
-	{ name: "Hồ sơ", path: "/", icon: <PeopleIcon /> },
-	{ name: "Đơn hàng", path: "/", icon: <PeopleIcon /> },
+	{ name: "Theo dõi kiện hàng", path: "/customer/products", icon: <InventoryIcon /> },
 ];
 
 const SidebarCustomer = () => {
@@ -17,6 +15,7 @@ const SidebarCustomer = () => {
 
 	const logoutHandler = () => {
 		dispatch(logout());
+		window.location = "/login";
 	};
 
 	return (

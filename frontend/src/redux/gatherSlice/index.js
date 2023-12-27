@@ -1,15 +1,14 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-export const GatherSlice = createSlice({
+export const gathersSlice = createSlice({
 	name: "gathers",
 	initialState: {
 		gathers: [],
 		createGatherProgress: false,
+		updateGatherProgress: false,
 		getGatherProgress: false,
-		addOrderProgress: false,
-		addStaffProgress: false,
-		removeOrderProgress: false,
-		removeStaffProgress: false,
+		addProgress: false,
+		removeProgress: false,
 		deleteGatherProgress: false,
 		error: false,
 	},
@@ -23,7 +22,7 @@ export const GatherSlice = createSlice({
 		},
 		createGatherFailure: (state) => {
 			state.error = true;
-			state.createTransactionProgress = false;
+			state.createGatherProgress = false;
 		},
 
 		getGatherStart: (state) => {
@@ -38,56 +37,45 @@ export const GatherSlice = createSlice({
 			state.getGatherProgress = false;
 		},
 		
-		addOrderStart: (state) => {
-			state.addOrderProgress = true;
+		addStart: (state) => {
+			state.addProgress = true;
 		},
-		addOrderSuccess: (state, action) => {
+		addSuccess: (state, action) => {
 			const index = state.gathers.indexOf(action.payload._id);
 			state.gathers[index] = action.payload;
-			state.addOrderProgress = false;
+			state.addProgress = false;
 		},
-		addOrderFailure: (state) => {
+		addFailure: (state) => {
 			state.error = true;
-			state.addOrderProgress = false;
+			state.addProgress = false;
 		},
 
-		addStaffStart: (state) => {
-			state.addStaffProgress = true;
+		removeStart: (state) => {
+			state.removeProgress = true;
 		},
-		addStaffSuccess: (state, action) => {
+		removeSuccess: (state, action) => {
 			const index = state.gathers.indexOf(action.payload._id);
 			state.gathers[index] = action.payload;
-			state.addStaffProgress = false;
+			state.removeProgress = false;
 		},
-		addStaffFailure: (state) => {
+		removeFailure: (state) => {
 			state.error = true;
-			state.addStaffProgress = false;
+			state.removeProgress = false;
 		},
 
-		removeOrderStart: (state) => {
-			state.removeOrderProgress = true;
+		updateGatherStart: (state) => {
+			state.updateGatherProgress = true;
 		},
-		removeOrderSuccess: (state, action) => {
-			const index = state.gathers.indexOf(action.payload._id);
+		updateGatherSuccess: (state, action) => {
+			const index = state.gathers.findIndex(
+				(gather) => gather._id === action.payload._id
+			);
 			state.gathers[index] = action.payload;
-			state.removeOrderProgress = false;
+			state.updateGatherProgress = false;
 		},
-		removeOrderFailure: (state) => {
+		updateGatherFailure: (state) => {
 			state.error = true;
-			state.removeOrderProgress = false;
-		},
-
-		removeStaffStart: (state) => {
-			state.removeStaffProgress = true;
-		},
-		removeStaffSuccess: (state, action) => {
-			const index = state.gathers.indexOf(action.payload._id);
-			state.gathers[index] = action.payload;
-			state.removeStaffProgress = false;
-		},
-		removeStaffFailure: (state) => {
-			state.error = true;
-			state.removeStaffProgress = false;
+			state.updateGatherProgress = false;
 		},
 
 		deleteGatherStart: (state) => {
@@ -113,21 +101,18 @@ export const {
 	getGatherStart,
 	getGatherSuccess,
 	getGatherFailure,
-	addOrderStart,
-	addOrderSuccess,
-	addOrderFailure,
-	addStaffStart,
-	addStaffSuccess,
-	addStaffFailure,
-	removeOrderStart,
-	removeOrderSuccess,
-	removeOrderFailure,
-	removeStaffFailure,
-	removeStaffStart,
-	removeStaffSuccess,
+	addStart,
+	addSuccess,
+	addFailure,
+	removeStart,
+	removeSuccess,
+	removeFailure,
 	deleteGatherStart,
 	deleteGatherSuccess,
 	deleteGatherFailure,
-} = GatherSlice.actions;
+	updateGatherStart,
+	updateGatherSuccess,
+	updateGatherFailure,
+} = gathersSlice.actions;
 
-export default GatherSlice.reducer;
+export default gathersSlice.reducer;

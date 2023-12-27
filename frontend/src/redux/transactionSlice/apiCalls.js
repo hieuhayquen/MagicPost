@@ -9,77 +9,90 @@ export const createTransaction = async (payload, dispatch) => {
 	try {
 		const { data } = await axiosInstance.post(apiUrl, payload);
 		dispatch(actions.createTransactionSuccess(data.data));
-		return true;
+		return data.data;
 	} catch (error) {
 		dispatch(actions.createTransactionFailure());
 		return false;
 	}
 };
 
-export const getTransaction = async (payload, dispatch) => {
-	dispatch(actions.getTransactionStart());
-	try {
-		const { data } = await axiosInstance.get(apiUrl +`/${payload}`);
-		dispatch(actions.getTransactionSuccess(data.data));
-		return true;
-	} catch (error) {
-		dispatch(actions.getTransactionFailure());
-		return false;
-	}
-};
-
 export const addOrderToTransaction = async (payload, dispatch) => {
-	dispatch(actions.addOrderStart());
+	dispatch(actions.addStart());
 	try {
 		const { data } = await axiosInstance.put(apiUrl + "/add-order", payload);
-		dispatch(actions.addOrderSuccess(data.data));
+		dispatch(actions.addSuccess(data.data));
 		toast.success(data.message);
 		return true;
 	} catch (error) {
-		dispatch(actions.addOrderFailure());
+		dispatch(actions.addFailure());
 		return false;
 	}
 };
 
 export const addStaffToTransaction = async (payload, dispatch) => {
-	dispatch(actions.addStaffStart());
+	dispatch(actions.addStart());
 	try {
 		const { data } = await axiosInstance.put(apiUrl + "/add-staff", payload);
-		dispatch(actions.addStaffSuccess(data.data));
+		dispatch(actions.addSuccess(data.data));
 		toast.success(data.message);
 		return true;
 	} catch (error) {
-		dispatch(actions.addStaffFailure());
+		dispatch(actions.addFailure());
+		return false;
+	}
+};
+
+export const addProductToTransaction = async (payload, dispatch) => {
+	dispatch(actions.addStart());
+	try {
+		const { data } = await axiosInstance.put(apiUrl + "/add-product", payload);
+		dispatch(actions.addSuccess(data.data));
+		toast.success(data.message);
+		return true;
+	} catch (error) {
+		dispatch(actions.addFailure());
 		return false;
 	}
 };
 
 export const removeOrderFromTransaction = async (payload, dispatch) => {
-	dispatch(actions.removeOrderStart());
+	dispatch(actions.removeStart());
 	try {
-		const { data } = await axiosInstance.put(apiUrl + "/remove-order", payload);
-		dispatch(actions.removeOrderSuccess(data.data));
+		const { data } = await axiosInstance.put(apiUrl + "/remove/order", payload);
+		dispatch(actions.removeSuccess(data.data));
 		toast.success(data.message);
 		return true;
 	} catch (error) {
-		dispatch(actions.removeOrderFailure());
+		dispatch(actions.removeFailure());
 		return false;
 	}
 };
 
 export const removeStaffFromTransaction = async (payload, dispatch) => {
-	dispatch(actions.removeStaffStart());
+	dispatch(actions.removeStart());
 	try {
-		const { data } = await axiosInstance.put(apiUrl + "/remove-staff", payload);
-		dispatch(actions.removeStaffSuccess(data.data));
+		const { data } = await axiosInstance.put(apiUrl + "/remove/staff", payload);
+		dispatch(actions.removeSuccess(data.data));
 		toast.success(data.message);
 		return true;
 	} catch (error) {
-		dispatch(actions.removeStaffFailure());
+		dispatch(actions.removeFailure());
 		return false;
 	}
 };
 
+export const removeProductFromTransaction = async (payload, dispatch) => {
+	dispatch(actions.removeStart());
+	try {
+		const { data } = await axiosInstance.put(apiUrl + "/remove/product", payload);
+		dispatch(actions.removeSuccess(data.data));
+		toast.success(data.message);
+		return true;
+	} catch (error) {
+		dispatch(actions.removeFailure());
+		return false;
+	}
+};
 export const getAllTransactions = async (dispatch) => {
 	dispatch(actions.getAllTransactionsStart());
 	try {
@@ -88,6 +101,19 @@ export const getAllTransactions = async (dispatch) => {
 		return true;
 	} catch (error) {
 		dispatch(actions.getAllTransactionsFailure());
+		return false;
+	}
+};
+
+export const updateTransaction = async (id, transaction, dispatch) => {
+	dispatch(actions.updateTransactionStart());
+	try {
+		const { data } = await axiosInstance.put(`/transactions/${id}`, transaction);
+		dispatch(actions.updateTransactionSuccess(data.data));
+		toast.success(data.message);
+		return true;
+	} catch (error) {
+		dispatch(actions.updateTransactionFailure());
 		return false;
 	}
 };

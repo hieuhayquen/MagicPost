@@ -18,7 +18,7 @@ const SignUp = () => {
 		role: "customer",
 		phone: "",
 		address: "",
-		orders: [],
+		products: [],
 		workAt: "",
 	});
 	const [errors, setErrors] = useState({});
@@ -39,7 +39,7 @@ const SignUp = () => {
 	const schema = {
 		email: Joi.string().email({ tlds: false }).required().label("Email"),
 		password: passwordComplexity().required().label("Password"),
-		name: Joi.string().min(5).max(10).required().label("Name"),
+		name: Joi.string().required().label("Name"),
 	};
 
 	const handleSubmit = async (e) => {
@@ -49,10 +49,12 @@ const SignUp = () => {
 				setIsFetching(true);
 				const url = process.env.REACT_APP_API_URL + '/users';
 				await axios.post(url, data);
+				console.log(data);
 				setIsFetching(false);
 				toast.success("Account created successfully");
 				navigate("/login");
 			} catch (error) {
+				console.log(data);
 				setIsFetching(false);
 				if (
 					error.response &&

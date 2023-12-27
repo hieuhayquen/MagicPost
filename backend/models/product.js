@@ -1,7 +1,12 @@
 const mongoose = require('mongoose');
 const Joi = require('joi');
+const ObjectId = mongoose.Schema.Types.ObjectId;
 
 const productSchema = new mongoose.Schema({
+    senderId:{
+        type: ObjectId,
+        required: true,
+    },
     type:{
         type: String,
         required: true,
@@ -13,23 +18,23 @@ const productSchema = new mongoose.Schema({
     desc:{
         type: String,
     },
-    order:{
-        type: ObjectId,
-        ref: 'order',
-        required: true,
-    },
     status:{
         type: String,
+    },
+    place:{
+        type: String,
+        required: true,
     }
 });
 
 const validate = (product) => {
 	const schema = Joi.object({
+        senderId: Joi.string().required(),
 		type: Joi.string().required(),
 		weight: Joi.string().required(),
 		desc: Joi.string().allow(''),
-        order: Joi.string().required(),
         status: Joi.string().allow(''),
+        place: Joi.string().required(),
         
 	});
 	return schema.validate(product);

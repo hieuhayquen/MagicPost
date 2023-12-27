@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 const Joi = require('joi');
 
-
 const transactionSchema = new mongoose.Schema({
     name:{
         type: String,
@@ -25,7 +24,19 @@ const transactionSchema = new mongoose.Schema({
         ref: 'gather',
         required: true,
     },
-    orders: {
+    ordersSend: {
+        type: Array,
+        defult: [],
+    },
+    ordersRecive: {
+        type: Array,
+        defult: [],
+    },
+    productsSend: {
+        type: Array,
+        defult: [],
+    },
+    productsRecive: {
         type: Array,
         defult: [],
     },
@@ -38,7 +49,10 @@ const validate = (transaction) => {
 		admin: Joi.string().required(),
         staff: Joi.array().items(Joi.string()),
         gatherId: Joi.string().required(),
-        orders: Joi.array().items(Joi.string()),
+        ordersSend: Joi.array(),
+        ordersRecive: Joi.array(),
+        productsSend: Joi.array(),
+        productsRecive: Joi.array(),
 	});
 	return schema.validate(transaction);
 };

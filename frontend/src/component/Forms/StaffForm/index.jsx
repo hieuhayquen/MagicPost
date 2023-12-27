@@ -2,7 +2,8 @@ import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { createUser, updateUser } from "../../../redux/usersSlice/apiCalls";
-import { addStaffToTransaction, removeStaffFromTransaction } from "../../../redux/transactionSlice/apiCalls";
+import { addStaffToTransaction } from "../../../redux/transactionSlice/apiCalls";
+import { addStaffToGather } from "../../../redux/gatherSlice/apiCalls";
 import Joi from "joi";
 import passwordComplexity from "joi-password-complexity";
 import { useParams } from "react-router-dom";
@@ -10,28 +11,29 @@ import { Paper } from "@mui/material";
 import Button from "../../Button";
 import TextField from "../../Inputs/TextField";
 import Select from "../../Inputs/Select";
-import Radio from "../../Inputs/Radio";
-import PersonIcon from "@mui/icons-material/Person";
 import styles from "./styles.module.scss";
-//var ObjectID = require('mongodb').ObjectID;
+
+const role = [
+	{ name: "Quản lí điểm giao dịch", _id: "transactionAdmin" },
+	{ name: "Quản lí điểm tập kết", _id: "gatherAdmin" },
+];
 
 const StaffForm = () => {
 	const { currentUser } = useSelector((state) => state.users);
 	const [data, setData] = useState({
-		
 		email: "",
 		password: "",
 		name: "",
 		role: "",
 		address: "",
 		phone: "",
-		orders: [],
-		workAt: currentUser.workAt,
+		products: [],
+		workAt: "",
 	});
 	const { users, createUserProgress, updateUserProgress } = useSelector(
 		(state) => state.users
 	);
-	
+
 	const [errors, setErrors] = useState({});
 	const { id } = useParams();
 	const dispatch = useDispatch();
@@ -41,11 +43,14 @@ const StaffForm = () => {
 		setData((prev) => ({ ...prev, [name]: value }));
 	};
 
-
-	if (currentUser.role === 'gatherAdmin') data.role = 'gatherStaff';
-
-	if (currentUser.role === 'transactionAdmin') data.role = 'transactionStaff';
-
+	if (currentUser.role === 'gatherAdmin') {
+		data.role = 'gatherStaff';
+		data.workAt = currentUser.workAt;
+	}
+	if (currentUser.role === 'transactionAdmin') {
+		data.role = 'transactionStaff';
+		data.workAt = currentUser.workAt;
+	}
 
 	const handleErrorState = (name, value) => {
 		value === ""
@@ -54,17 +59,15 @@ const StaffForm = () => {
 	};
 
 	const schema = {
-		email: Joi.string().email({ tlds: false }).required().label("Email"),
-		password: passwordComplexity().required().label("Password"),
-		name: Joi.string().min(3).max(10).required().label("Name"),
+		email: Joi.string().email({ tlds: false }).required(),
+		password: passwordComplexity().required(),
+		name: Joi.string().min(0).max(20).required(),
 	};
 
 	useEffect(() => {
 		if (id !== "new" && users) {
 			const user = users.filter((user) => user._id === id);
-			//const newId = new ObjectID();
 			setData({
-				//_id : newId,
 				email: user[0].email,
 				name: user[0].name,
 				address: user[0].address,
@@ -76,21 +79,48 @@ const StaffForm = () => {
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		if (Object.keys(errors).length === 0) {
-			if (id !== "new") {
-				const res = await updateUser(id, data, dispatch);
-				res && navigate("/transaction/staffs");
-			} else {
-				const res = await createUser(data, dispatch);
-				///console.log(res.json());
-				const payload = {
-					transactionId: data.workAt,
-					staff: data,
-				}
-				console.log(payload);
-				addStaffToTransaction(payload, dispatch);
-				
-				res && navigate("/transaction/staffs");
-			}
+			// thêm nhân viên ở điểm giao dịch
+			if (currentUser.role === 'transactionAdmin'){ 
+				if (id !== "new") {
+					const res = await updateUser(id, data, dispatch);
+					res && navigate("/transaction/staffs");
+				} else {
+					const res = await createUser(data, dispatch);
+					const payload = {
+						transactionId: data.workAt,
+						staffId: res._id,
+					}
+					if (res) addStaffToTransaction(payload, dispatch);
+					res && navigate("/transaction/staffs") ;
+				};
+			} else if (currentUser.role === 'gatherAdmin'){
+				if (id !== "new") {
+					const res = await updateUser(id, data, dispatch);
+					res && navigate("/gather/staffs");
+				} else {
+					const res = await createUser(data, dispatch);
+					console.log(res);
+					const payload = {
+						gatherId: data.workAt,
+						staffId: res._id,
+					}
+					console.log(payload);
+					if (res) addStaffToGather(payload, dispatch);
+					
+					res && navigate("/gather/staffs") ;
+				};
+			} else if (currentUser.role === 'companyAdmin'){
+				if (id !== "new") {
+					const res = await updateUser(id, data, dispatch);
+					res && data.role === 'transactionAdmin' && navigate("/transactions/admin");
+					res && data.role === 'gatherAdmin' && navigate("/gathers/admin");
+				} else {
+					const res = await createUser(data, dispatch);	
+					res && data.role === 'transactionAdmin' && navigate("/transactions/admin");
+					res && data.role === 'gatherAdmin' && navigate("/gathers/admin");
+				};
+			};
+			
 		} else {
 			console.log("please fill out properly");
 		}
@@ -100,7 +130,7 @@ const StaffForm = () => {
 		<div className={styles.container}>
 			<Paper className={styles.form_container}>
 				<h1 className={styles.heading}>
-					{id === "new" ? "Thêm nhân viên mới" : "Chinh sửa nhân viên"} <PersonIcon />
+					{id === "new" ? "Thêm nhân viên mới" : "Chinh sửa nhân viên"} 
 				</h1>
 				<form onSubmit={handleSubmit}>
 					<div className={styles.input_container}>
@@ -151,20 +181,31 @@ const StaffForm = () => {
 							placeholder="Nhập số điện thoại"
 							name="phone"
 							handleInputState={handleInputState}
-							//schema={schema.name}
 							handleErrorState={handleErrorState}
 							value={data.phone}
 							error={errors.phone}
 							required={true}
 						/>
 					</div>
+					{currentUser.role === "companyAdmin" && (
+						<div className={styles.input_container}>
+							<Select
+								name="role"
+								handleInputState={handleInputState}
+								label="Chức vụ"
+								placeholder="Chọn"
+								options={role}
+								value={data.role}
+								required={true}
+							/>
+						</div>
+					)}
 					<div className={styles.input_container}>
 						<TextField
 							label="Địa chỉ"
 							placeholder="Nhập địa chỉ"
 							name="address"
 							handleInputState={handleInputState}
-							//schema={schema.name}
 							handleErrorState={handleErrorState}
 							value={data.address}
 							error={errors.address}
@@ -173,10 +214,9 @@ const StaffForm = () => {
 					</div>
 					<Button
 						type="submit"
-						label={id === "new" ? "Submit" : "Update"}
+						label={id === "new" ? "Tạo" : "Chỉnh sửa"}
 						isFetching={id === "new" ? createUserProgress : updateUserProgress}
 						style={{ marginLeft: "auto" }}
-						
 					/>
 				</form>
 			</Paper>

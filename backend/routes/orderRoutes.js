@@ -1,8 +1,7 @@
 const router = require("express").Router();
-const { User } = require("../models/user");
+//const { User } = require("../models/user");
 const { Order, validate } = require("../models/order");
 const auth = require("../middleware/auth");
-const admin = require("../middleware/admin");
 const validateObjectId = require("../middleware/validateObjectId");
 
 // Create order

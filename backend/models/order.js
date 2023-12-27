@@ -3,15 +3,43 @@ const Joi = require('joi');
 const ObjectId = mongoose.Schema.Types.ObjectId;
 
 const orderSchema = new mongoose.Schema({
-    senderId:{
-        type: ObjectId,
-        ref: 'user',
+    userSendName:{
+        type: String,
         required: true,
     },
-    reciverId:{
-        type: ObjectId,
-        ref: 'user',
+    userSendAddress:{
+        type: String,
         required: true,
+    },
+    userSendPhone:{
+        type: String,
+        required: true,
+    },
+    userReciveName:{
+        type: String,
+        required: true,
+    },
+    userReciveAddress:{
+        type: String,
+        required: true,
+    },
+    userRecivePhone:{
+        type: String,
+        required: true,
+    },
+    senderId:{
+        type: ObjectId,
+        required: true,
+    },
+    senderName:{
+        type: String,
+    },
+    reciverId:{
+        type: String,
+        required: true,
+    },
+    reciverName:{
+        type: String,
     },
     price:{
         type: Number,
@@ -29,31 +57,28 @@ const orderSchema = new mongoose.Schema({
         type : Date,
     },
     productId: {
-        type: Array,
-        default: [],
+        type: String,
+        default: null,
     },
-    currentTerminal:{
-        type: ObjectId,
-        required: true,
-    },
-    nextTerminal:{
-        type: ObjectId,
-        required: true,
-    }
 });
 
 const validate = (order) => {
 	const schema = Joi.object({
+        userSendName: Joi.string().required(),
+        userSendAddress: Joi.string().required(),
+        userSendPhone: Joi.string().required(),
+        userReciveName: Joi.string().required(),
+        userReciveAddress: Joi.string().required(),
+        userRecivePhone: Joi.string().required(),
 		senderId: Joi.string().required(),
+        senderName: Joi.string().required(),
 		reciverId: Joi.string().required(),
+        reciverName: Joi.string().required(),
 		price: Joi.number().required(),
 		status: Joi.string().required(),
-		daySend: Joi.date().required(),
-        dayRecive: Joi.date().allow(''),
-        productId: Joi.array().items(Joi.string()),
-        currentTerminal: Joi.string().required(),
-        nextTerminal: Joi.string().required(),
-
+        daySend: Joi.date(),
+        dayRecive: Joi.date(),
+        productId: Joi.string(),
 	});
 	return schema.validate(order);
 };

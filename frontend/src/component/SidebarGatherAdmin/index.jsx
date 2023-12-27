@@ -8,8 +8,8 @@ import ExitToApp from "@mui/icons-material/ExitToApp";
 import styles from "./styles.module.scss";
 
 const options = [
-	{ name: "Thống kê", path: "/transaction", icon: <DashboardIcon /> },
-	{ name: "Nhân viên", path: "/transaction/staff", icon: <PeopleIcon /> },
+	{ name: "Thống kê", path: "/", icon: <DashboardIcon /> },
+	{ name: "Nhân viên", path: "/gather/staffs", icon: <PeopleIcon /> },
 ];
 
 const SidebarGatherAdmin = () => {
@@ -17,6 +17,7 @@ const SidebarGatherAdmin = () => {
 
 	const logoutHandler = () => {
 		dispatch(logout());
+		window.location = "/login";
 	};
 
 	return (
@@ -30,7 +31,6 @@ const SidebarGatherAdmin = () => {
 					>
 						<NavLink
 							className={styles.option}
-							// exact={option.path === "/" ? true : false}
 							exact={option.path}
 							to={option.path}
 							activeclassname={styles.sidebar_active}

@@ -30,12 +30,12 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    orders: {
-        type: [String],
+    products: {
+        type: Array,
         default: [],
     },
     workAt:{
-        type: mongoose.Schema.Types.ObjectId,
+        type: String,
     },
 })
 
@@ -51,14 +51,14 @@ userSchema.methods.generateAuthToken = function() {
 
 const validate = (user) => {
     const schema = Joi.object({
-        name: Joi.string().min(5).max(15).required(),
+        name: Joi.string().required(),
 		email: Joi.string().email().required(),
 		password: passwordComplexity().required(),
 		phone: Joi.string().required(),
 		address: Joi.string().required(),
 		role: Joi.string().valid("customer", "companyAdmin", "transactionAdmin", "gatherAdmin", "transactionStaff", "gatherStaff").required(),
-        orders: Joi.array().items(Joi.string()),
-        workAt: Joi.string().allow(''),
+        products: Joi.array(),
+        workAt: Joi.string().allow(""),
     });
     return schema.validate(user);
 }

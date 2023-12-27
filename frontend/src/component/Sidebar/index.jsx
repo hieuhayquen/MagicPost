@@ -19,6 +19,7 @@ const Sidebar = () => {
 
 	const logoutHandler = () => {
 		dispatch(logout());
+		window.location = "/login";
 	};
 
 	return (
@@ -32,7 +33,6 @@ const Sidebar = () => {
 					>
 						<NavLink
 							className={styles.option}
-							// exact={option.path === "/" ? true : false}
 							exact={option.path}
 							to={option.path}
 							activeclassname={styles.sidebar_active}
